@@ -1,20 +1,19 @@
+import { CreateTableDto } from './dto/creat-table.dto';
 import { tableService } from './table.service';
-import { Controller, Get, Post } from '@nestjs/common';
-/* import { table } from 'console';
- */
-
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { table } from 'console';
 
 @Controller('table')
 export class TableController {
-    constructor(tableService:tableService){}
-    @Get()
-    findAll(){
-        return 'buscar tadas as  mesa';
-    }
+  constructor(private tableService: tableService) {}
+  
+  @Get()
+  findAll() {
+    return this.tableService.findAll();
+  }
 
-    @Post()
-    create(){
-        return 'criar uma mesa';
-    }
+  @Post()
+  create(@Body() CreateTableDto: CreateTableDto) {
+    return this.tableService.create(CreateTableDto);
+  }
 }
-
