@@ -4,18 +4,18 @@ import { tableService } from './table.service';
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { table } from 'console';
 
-ApiTags('table')
+ApiTags('table');
 @Controller('table')
 export class TableController {
-  constructor(private tableService: tableService) {}
-  
+  constructor(private readonly tableService: tableService) {}
+
   @Get()
   findAll() {
     return this.tableService.findAll();
   }
 
   @Post()
-  create(@Body() CreateTableDto: CreateTableDto) {
-    return this.tableService.create(CreateTableDto);
+  create(@Body() dto: CreateTableDto) {
+    return this.tableService.create(dto);
   }
 }

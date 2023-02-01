@@ -1,4 +1,5 @@
+import { IsNumber } from 'class-validator';
 export class Table {
-  id: string;
-  
+  id?: string;
+  number: number;
 }
