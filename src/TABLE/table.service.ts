@@ -1,25 +1,23 @@
-import { table } from 'console';
-import { PrismaService } from './../prisma/prisma.service';
-
-import { Table as data } from './../entities/table.entity';
-import { CreateTableDto } from './dto/creat-table.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "src/prisma/prisma.service";
+import { CreateTableDto } from "./dto/create-table.dto";
+import { Table } from "./entities/table.entity";
 
 @Injectable()
-export class tableService {
-
+export class TableService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
+  findAll(): Promise<Table[]> {
     return this.prisma.table.findMany();
   }
 
-  create(dto: CreateTableDto) {
-    const table: data = { ...dto };
+  findOne(id: string): Promise<Table> {
+    return this.prisma.table.findUnique({ where: { id } });
+  }
 
-   return this.prisma.table.create({data});
+  create(dto: CreateTableDto): Promise<Table> {
+    const data: Table = { ...dto };
 
-      
-    
+    return this.prisma.table.create({ data });
   }
 }
