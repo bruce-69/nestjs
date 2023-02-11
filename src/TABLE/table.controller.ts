@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
-import { CreateTableDto } from "./dto/create-table.dto";
-import { Table } from "./entities/table.entity";
+import { CreateTableDto } from "./dto/creat-table.dto"; 
+import { Table } from "@prisma/client";
 import { TableService } from "./table.service";
 
 @ApiTags("table")
