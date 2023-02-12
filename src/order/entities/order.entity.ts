@@ -1,5 +1,5 @@
+import { Product} from 'src/product/entities/product.entity';
 
-import { Product } from "src/product/entities/product.entity";
 import { Table } from "@prisma/client"; 
 import { User } from "@prisma/client"; 
 export class Order {
