@@ -1,29 +1,34 @@
+import { IsPositive } from 'class-validator';
 import { Product } from 'src/product/entities/product.entity';
+import { creatOrderProductDto } from './../../TABLE/dto/creat-order-product.dto';
  
 import { ApiProperty } from '@nestjs/swagger';
-import { isInt, , isPositive, isUUID } from 'class-validator';
+import { isInt, isPositive, isUUID, ValidateNested, IsUUID, IsInt } from 'class-validator';
+import { type } from 'os';
  
 export class CreateOrderDto {
-    @isUUID()
+    @IsUUID()
   @ApiProperty({
     description: 'loren',
     example:'1',
 
 })
   userId: string;
-  @isInt()
-  @isPositive()
+  @IsInt()
+  @IsPositive()
 @ApiProperty({
     description:"loren"
     example:'1'
 })
   tablenumber: number;
-
-@isUUID(undefined,{ each:true})
+@ValidateNested({
+  each:true,
+})
+@type(() => CreateOrderDto )
 @ApiProperty({
     description:'loren'
-    example:'loren'
+    type:[creatOrderProductDto]
 })
 
-  Products: string[];
+  Products: creatOrderProductDto[];
 }

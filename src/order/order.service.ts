@@ -1,8 +1,8 @@
-import { Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
-import { PrismaService } from "src/prisma/prisma.service";
-import { handleError } from "src/utils/handle-error.util";
-import { CreateOrderDto } from "./dto/create-order.dto";
+import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { handleError } from 'src/utils/handle-error.util';
+import { CreateOrderDto } from './dto/create-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -12,19 +12,23 @@ export class OrderService {
     const data: Prisma.OrderCreateInput = {
       user: {
         connect: {
-          id: createOrderDto.userId
-        }
+          id: createOrderDto.userId,
+        },
       },
       table: {
         connect: {
-          number: createOrderDto.tableNumber
-        }
+          number: createOrderDto.tableNumber,
+        },
       },
       products: {
-        connect: createOrderDto.products.map((productId) => ({
-          id: productId
-        }))
-      }
+        createMany: {
+          data: createOrderDto.products.map((createOrderProductDto) => ({
+            productId: createOrderProductDto.productId,
+            quantity: createOrderProductDto.quantity,
+            description: createOrderProductDto.description,
+          })),
+        },
+      },
     };
 
     return this.prisma.order
@@ -34,20 +38,26 @@ export class OrderService {
           id: true,
           table: {
             select: {
-              number: true
-            }
+              number: true,
+            },
           },
           user: {
             select: {
-              name: true
-            }
+              name: true,
+            },
           },
           products: {
             select: {
-              name: true
-            }
-          }
-        }
+              quantity: true,
+              description: true,
+              product: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
       })
       .catch(handleError);
   }
@@ -58,24 +68,51 @@ export class OrderService {
         id: true,
         table: {
           select: {
-            number: true
-          }
+            number: true,
+          },
         },
         user: {
           select: {
-            name: true
-          }
+            name: true,
+          },
         },
         _count: {
           select: {
-            products: true
-          }
-        }
-      }
+            products: true,
+          },
+        },
+      },
     });
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} order`;
+    return this.prisma.order.findUnique({
+      where: { id },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        table: {
+          select: {
+            number: true,
+          },
+        },
+        products: {
+          select: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                price: true,
+                image: true,
+                description: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 }
