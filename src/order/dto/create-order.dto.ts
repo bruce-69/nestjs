@@ -6,19 +6,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { isInt, isPositive, isUUID, ValidateNested, IsUUID, IsInt } from 'class-validator';
 import { type } from 'os';
  
-export class CreateOrderDto {
-    @IsUUID()
-  @ApiProperty({
-    description: 'loren',
-    example:'1',
-
-})
-  userId: string;
   @IsInt()
   @IsPositive()
 @ApiProperty({
-    description:"loren"
-    example:'1'
+    description:"loren",
+    example:'1',
 })
   tablenumber: number;
 @ValidateNested({
@@ -26,8 +18,8 @@ export class CreateOrderDto {
 })
 @type(() => CreateOrderDto )
 @ApiProperty({
-    description:'loren'
-    type:[creatOrderProductDto]
+    description:'loren',
+    type:[creatOrderProductDto],
 })
 
   Products: creatOrderProductDto[];

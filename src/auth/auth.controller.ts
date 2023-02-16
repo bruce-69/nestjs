@@ -5,24 +5,23 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  UseGuards
-} from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
-import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
-import { AuthService } from "./auth.service";
-import { LoginResponseDto } from "./dto/login-response.dto";
-import { logindto } from "./dto/login.dto";
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthService } from './auth.service';
+import { LoginResponseDto } from './dto/login-response.dto';
+import { logindto } from './dto/login.dto';
 
-
-@Controller("auth")
-@ApiTags("auth")
+@Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: "Realizar login, recebendo um token de autenticação"
+    summary: 'Realizar login, recebendo um token de autenticação',
   })
   login(@Body() loginDto: logindto): Promise<LoginResponseDto> {
     return this.authService.login(loginDto);
@@ -31,10 +30,13 @@ export class AuthController {
   @Get()
   @UseGuards(AuthGuard())
   @ApiOperation({
-    summary: "Retorna o usuário autenticado no momento"
+    summary: 'Retorna o usuário autenticado no momento',
   })
   @ApiBearerAuth()
-  profile() {
-    return { message: "Autenticação bem sucedida" };
+  profile(@LoggedUser() user: User) {
+
+
+    return { user };
+    //falta import ctrl . nao funciona
   }
 }
