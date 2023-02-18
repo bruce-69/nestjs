@@ -15,7 +15,7 @@ export class OrderController {
   @ApiOperation({
     summary: "Criar um pedido"
   })
-  create(@Body() createOrderDto: CreateOrderDto) {
+  create(@LoggedUser() user: User, @body()CreateOrderDto: CreateOrderDto) {
     return this.orderService.create(createOrderDto);
   }
 
@@ -35,5 +35,3 @@ export class OrderController {
     return this.orderService.findOne(id);
   }
 }
-
-//aaaaaaa vai ter q decer vou me segurar
